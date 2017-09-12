@@ -1,0 +1,62 @@
+package ch16;
+import java.net.*;
+import java.io.*;
+import java.util.*;
+
+public class ServerTest {
+	
+	public void start() {
+		ServerSocket serverSocket;
+		Socket socket;
+		
+		try {
+			serverSocket=new ServerSocket(7777);
+			while(true) {
+			socket=serverSocket.accept();
+			System.out.println("클라이언트 요청을 기다리고 있습니다.");
+			System.out.println(socket.getInetAddress()+"님이 입장하였습니다.");
+			ServerThread server=new ServerThread(socket);
+			server.start();
+			}
+		}catch(Exception e) {
+			System.out.println("요청에 문제가 발생하였습니다.");
+		}
+	}
+	
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		new ServerTest().start();
+	}
+
+}
+
+class ServerThread extends Thread{
+	Socket socket;
+	DataInputStream dis;
+	DataOutputStream dos;
+	ServerThread(Socket socket){
+		this.socket=socket;
+		
+		try {
+			dis=new DataInputStream(socket.getInputStream());
+			dos=new DataOutputStream(socket.getOutputStream());
+		}catch(Exception e) {}
+		
+	}
+	
+	public void run() {
+		String name="";
+		try {
+			if(dis!=null) {
+				name=dis.readUTF();
+				dos.writeUTF(name);
+			}
+			
+			while(dis!=null) {
+				dos.writeUTF(dis.readUTF());
+			}
+		}catch(Exception e) {}
+	}
+}
+
+

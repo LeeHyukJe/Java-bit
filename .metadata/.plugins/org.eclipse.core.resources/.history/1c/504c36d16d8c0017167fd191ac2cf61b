@@ -1,0 +1,99 @@
+package MakingGames;
+
+import java.awt.Toolkit;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.Scanner;
+
+public class Sonagi {
+	ArrayList words = new ArrayList();
+	String[] data = { "1", "2", "3", "4", "5" };
+	int interval = 2 * 1000;
+	int life = 3; // 게임의 라이프
+	int score; // 게임의 점수
+	Thread wg = new Thread(new WordGenerator());
+	Thread wd = new Thread(new WordDropper());
+
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		Sonagi game = new Sonagi();
+		game.wg.start();
+		game.wd.start();
+
+		ArrayList words = game.words;
+
+		while (true) {
+			System.out.println("LIFE:" + game.life + "SCORE:" + game.score);
+			System.out.println(words);
+
+			String prompt = ">>";
+			System.out.println(prompt);
+
+			// 화면으로부터 라인단위로 입력받는다.
+			Scanner s = new Scanner(System.in);
+			String input = s.nextLine().trim();
+
+			for (int i = 0; i < words.size(); i++) {
+				// 사용자가 입력한 단어가 words에 있는지 확인한다.
+				if (words.get(i).equals(input)) {
+					words.remove(input); // words를 삭제하고
+					Toolkit.getDefaultToolkit().beep(); // 삑 소리 나게 함
+					game.score += input.length()*50; //점수 계산
+				}
+			}
+		}
+	}
+
+	public void delay(int millis) {
+		try {
+			Thread.sleep(millis);
+		} catch (Exception e) {
+		}
+	}
+
+	class WordGenerator implements Runnable {
+		public void run() {
+			while(true) {
+				int rand=(int)(Math.random()*data.length);
+				words.add(new Word(data[rand]));//words배열리스트애 Word객체 추가
+				delay(interval);
+			}
+		}
+	}
+
+	class WordDropper implements Runnable {
+		public void run() {
+			
+			for(int i=0;i<words.size();i++) {
+				((Word)words.get(i)).y--; //words에 저장된 모든 단어의 y값을 1감소 시킨다.
+				if(((Word)words.get(i)).y<0) {//y값이 0보다 작으면
+					words.remove(i);//단어를 삭제하고
+					life--; //life 감소
+				}
+				if(life==0) { //life가 0이 되면
+					System.out.println("생명 :"+life+" "+"점수: "+score);
+					System.exit(0);
+				}
+				delay(interval); //시간 지연
+			}
+		}
+	}
+
+	class Word {
+		String word = ""; // 지워야할 글자
+		int y;
+
+		Word(String word) {
+			this(word, 10);
+		}
+
+		Word(String word, int y) {
+			this.word = word;
+			this.y = y;
+		}
+
+		public String toString() {
+			return "LIFE: " + y + " SCORE: " + score;
+		}
+	}
+}

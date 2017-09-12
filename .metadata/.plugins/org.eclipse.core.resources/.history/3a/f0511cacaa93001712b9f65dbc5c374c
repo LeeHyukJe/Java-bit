@@ -1,0 +1,135 @@
+package ch16;
+
+import java.net.*;
+import java.io.*;
+import java.util.*;
+import java.sql.*;
+import java.util.Scanner;
+import oracle.jdbc.pool.OracleDataSource;
+import java.awt.*;
+import java.awt.Event;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+
+public class Userchat extends Frame{
+	static OracleDataSource ods = null;
+	static Connection conn = null;
+	static PreparedStatement pstmt = null;
+	static ResultSet rs = null;
+	static String data[];
+
+	static Panel chatPanel;
+	static Panel inputPanel;
+	static TextField input;
+	static Label chatla;
+	
+	Userchat() {
+		try {
+			int i=0;
+			ods = new OracleDataSource();
+			ods.setURL("jdbc:oracle:thin:@localhost:1521:xe");
+			ods.setUser("student");
+			ods.setPassword("1234");
+			conn = ods.getConnection();
+			String cName = "select data from student";
+			pstmt = conn.prepareStatement(cName);
+			rs = pstmt.executeQuery();
+			data=new String[3];
+			while (rs.next()) {
+				data[i++] = rs.getString(1).trim();
+			}
+		} catch (Exception e) {
+		}
+		
+		
+		chatPanel=new Panel();
+		inputPanel=new Panel();
+		input=new TextField();
+		chatla=new Label();
+		
+		inputPanel.setLayout(new GridLayout());
+		inputPanel.add(input,"South");
+		
+		chatPanel.add(chatla);
+		for(int i=0;i<data.length;i++) {
+			chatla.setText(data[i]);
+		}
+		add(chatPanel,"Center");
+		add(inputPanel,"South");
+		setBounds(100,100,400,700);
+		setVisible(true);
+		
+	}
+	
+
+	
+
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		new Userchat();
+		try {
+			String serverIP = "192.168.104.26";
+			Socket socket = new Socket(serverIP, 7777);
+			Thread sender = new Thread(new ClientSender(socket,args[0]));
+			Thread receive = new Thread(new ClientReceive(socket));
+
+			sender.start();
+			receive.start();
+		} catch (Exception e) {
+		}
+	}
+
+	static class ClientSender implements Runnable {
+		Socket socket;
+		DataOutputStream dos;
+		String name;
+
+		ClientSender(Socket socket, String name) {
+			this.socket = socket;
+			try {
+				this.name = name;
+				dos = new DataOutputStream(socket.getOutputStream());
+			} catch (Exception e) {
+			}
+		}
+
+		public void run() {
+			Scanner sc = new Scanner(System.in);
+
+			try {
+				if (dos != null) {
+					dos.writeUTF(name);
+				}
+
+				while (dos != null) {
+					dos.writeUTF("[" + name + "]" + sc.nextLine());
+				}
+			} catch (Exception e) {
+			}
+		}
+	}
+
+	static class ClientReceive implements Runnable {
+		Socket socket;
+		DataInputStream dis;
+		String res;
+		int next=1;
+		ClientReceive(Socket socket) {
+			this.socket = socket;
+			try {
+				dis = new DataInputStream(socket.getInputStream());
+			} catch (Exception e) {
+			}
+		}
+
+		public void run() {
+			try {
+				while (dis != null) {
+					res=dis.readUTF();
+					System.out.println(res);
+				}
+			} catch (Exception e) {
+			}
+		}
+	}
+}

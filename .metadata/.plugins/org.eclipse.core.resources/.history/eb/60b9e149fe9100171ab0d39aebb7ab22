@@ -1,0 +1,55 @@
+package ch16;
+import java.net.*;
+import java.io.*;
+import java.util.*;
+
+public class ServerTest {
+	public void start() {
+		ServerSocket serverSocket=null;
+		Socket socket=null;
+		
+		try {
+			serverSocket=new ServerSocket(7777);
+			while(true) {
+				socket=serverSocket.accept();
+				System.out.println(socket.getInetAddress()+"¥‘¿Ã ¡¢º”«œºÃΩ¿¥œ¥Ÿ.");
+				Thread server=new Thread(new ServerThread(socket));
+				server.start();
+			}
+		}catch(IOException e) {}
+	}
+	
+	void sendToAll(String msg) {
+		
+	}
+	
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		new ServerTest().start();
+	}
+
+}
+
+class ServerThread implements Runnable{
+	Socket socket;
+	DataInputStream dis;
+	DataOutputStream dos;
+	
+	ServerThread(Socket socket) throws IOException{
+		this.socket=socket;
+		
+		dis=new DataInputStream(socket.getInputStream());
+		dos=new DataOutputStream(socket.getOutputStream());
+	}
+	
+	public void run() {
+		String name="";
+		try {
+			name = dis.readUTF();
+			System.out.println(name+"¥‘¿Ã µÈæÓø¿ºÃΩ¿¥œ¥Ÿ.");
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+}

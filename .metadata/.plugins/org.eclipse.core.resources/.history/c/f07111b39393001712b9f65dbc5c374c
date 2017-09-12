@@ -1,0 +1,140 @@
+package ch16;
+import java.net.*;
+import java.io.*;
+import java.util.*;
+import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
+import java.util.Scanner;
+import oracle.jdbc.pool.OracleDataSource;
+
+public class ServerTest {
+	HashMap clients;
+	
+	ServerTest(){
+		clients=new HashMap();
+		Collections.synchronizedMap(clients);
+	}
+	public void start() {
+		ServerSocket serverSocket=null;
+		Socket socket=null;
+		
+		try {
+			serverSocket=new ServerSocket(7777);
+			System.out.println("클라이언트 요청을 기다리고 있습니다.");
+			while(true) {
+				socket=serverSocket.accept();
+				System.out.println(socket.getInetAddress()+"님이 입장하였습니다.");
+				ServerThread server=new ServerThread(socket);
+				server.start();
+			}
+		}catch(Exception e) {
+			System.out.println("요청에 문제가 발생하였습니다.");
+		}
+	}
+	
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		new ServerTest().start();
+	}
+	
+	void sendToAll(String msg) {
+		Iterator it=clients.keySet().iterator();
+		
+		while(it.hasNext()) {
+			DataOutputStream dos=(DataOutputStream)clients.get(it.next());
+			try {
+				dos.writeUTF(msg);
+			}catch(Exception e) {}
+		}
+	}
+
+}
+
+class ServerThread extends Thread{
+	ServerTest serverTest=new ServerTest();
+	Socket socket;
+	DataInputStream dis;
+	DataOutputStream dos;
+
+	DBThread dbserver;
+	ServerThread(Socket socket){
+		this.socket=socket;
+		
+		try {
+			dis=new DataInputStream(socket.getInputStream());
+			dos=new DataOutputStream(socket.getOutputStream());
+		}catch(Exception e) {}
+		
+	}
+	
+	public void run() {
+		String name="";
+		int next=1;
+		try {
+			if(dis!=null) {
+				name=dis.readUTF();
+				//dos.writeUTF(name+"님이 입장하였습니다.");
+				serverTest.clients.put(name, dos);
+				serverTest.sendToAll("#"+name+"님이 입장하셨습니다.");
+				System.out.println("현재 접속자 수는 "+serverTest.clients.size()+" 입니다.");
+			}
+			while(dis!=null) {
+				//dos.writeUTF(dis.readUTF());
+				serverTest.sendToAll(dis.readUTF());
+				//DBread(dis,next++);
+				dbserver=new DBThread(dis,next++);
+				dbserver.start();
+			}
+		}catch(Exception e) {}
+		finally {
+			serverTest.sendToAll("#"+name+"님이 나가셨습니다.");
+			serverTest.clients.remove(name);
+			System.out.println(socket.getInetAddress()+":"+socket.getPort()+"에서  접속을 종료하였습니다.");
+			System.out.println("현재 접속자 수는 "+serverTest.clients.size()+"입니다.");
+		}
+	}
+	
+	
+}
+
+class DBThread extends Thread{
+	//Socket socket;
+	DataInputStream dis=null;
+	
+	OracleDataSource ods = null;
+	Connection conn = null;
+	PreparedStatement pstmt = null;
+	
+	int next;
+	
+	DBThread (DataInputStream dis,int next){
+		this.dis=dis;
+		this.next=next;
+	}
+	public void run() {
+		try {
+			int ok;
+			String data=dis.readUTF().toString();
+			ods = new OracleDataSource();
+			ods.setURL("jdbc:oracle:thin:@localhost:1521:xe");
+			ods.setUser("student");
+			ods.setPassword("1234");
+			conn = ods.getConnection();
+			String input = "insert into student (id,data) values(?,?) ";
+			pstmt = conn.prepareStatement(input);
+			pstmt.setInt(1, next);
+			pstmt.setString(2,data);
+			ok = pstmt.executeUpdate();
+			
+			if(ok==1) {
+				System.out.println("등록이 완료되었습니다.");
+			}
+				
+		} catch (Exception e) {}
+	}
+}
+
+

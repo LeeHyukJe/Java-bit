@@ -1,0 +1,42 @@
+package 연습문제;
+
+class Exercise13_1 {
+	public static void main(String args[]) {
+		Thread1 th1 = new Thread1();
+		th1.start();
+		
+//		Runnable r1=new Runnable() {
+//			public void run() {
+//				for (int i = 0; i < 300; i++) {
+//					System.out.print('-');
+//				}
+//			}
+//		};
+//		Thread th2=new Thread(r1);
+//		th2.start();
+		
+		Thread th2= new Thread(new Runnable() {
+			public void run() {
+				for (int i = 0; i < 300; i++) {
+					System.out.print('-');
+					try {
+						Thread.sleep(100);
+					} catch (InterruptedException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
+			}
+		});
+		th2.start();
+	}
+}
+
+class Thread1 extends Thread {
+	public void run() {
+		for (int i = 0; i < 300; i++) {
+			System.out.print('-');
+		}
+	}
+}
+

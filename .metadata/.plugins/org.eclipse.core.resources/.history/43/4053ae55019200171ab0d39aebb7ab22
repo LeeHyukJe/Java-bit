@@ -1,0 +1,76 @@
+package ch16;
+
+import java.net.*;
+import java.io.*;
+import java.util.*;
+
+public class ClientTest {
+
+	
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		String serverIp="192.168.104.26";
+		try {
+			Socket socket=new Socket(serverIp,7777);
+			Thread sender=new Thread(new ClientSender(socket,args[0]));
+			ClientReceiver receiver=new ClientReceiver(socket);
+			sender.start();
+			receiver.start();
+		}catch(Exception e) {}
+	}
+
+}
+
+class ClientSender implements Runnable{
+	String name;
+	Socket socket;
+	DataOutputStream dos;
+	
+	ClientSender(Socket socket, String name){
+		try {
+			this.socket=socket;
+			this.name=name;
+			dos=new DataOutputStream(socket.getOutputStream());
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	public void run() {
+		Scanner sc=new Scanner(System.in);
+		try {
+			if(dos!=null) {
+				dos.writeUTF(name);
+			}
+			while(dos!=null) {
+				dos.writeUTF("["+name+"]"+sc.nextLine());
+			}
+		}catch(Exception e) {}
+	}
+	
+}
+
+class ClientReceiver extends Thread{
+	DataInputStream dis;
+	Socket socket;
+	
+	ClientReceiver(Socket socket){
+		this.socket=socket;
+		try {
+			dis=new DataInputStream(socket.getInputStream());
+		}catch(Exception e) {}
+		
+	}
+	public void run() {
+		while(dis!=null) {
+			try {
+				System.out.println(dis.readUTF());
+				System.out.println("test");
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+	}
+}

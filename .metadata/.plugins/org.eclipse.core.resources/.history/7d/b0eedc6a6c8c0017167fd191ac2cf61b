@@ -1,0 +1,108 @@
+package MakingGames;
+
+import java.awt.Toolkit;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.Scanner;
+
+public class Sonagi {
+	ArrayList words = new ArrayList();
+	String[] data = { "1", "2", "3", "4", "5" };
+	int interval = 5 * 1000;
+	int life = 3;
+	int score;
+	Thread wg = new Thread(new WordGenerator());
+	Thread wd = new Thread(new WordDropper());
+
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		Sonagi game = new Sonagi();
+		game.wg.start();
+		game.wd.start();
+
+		ArrayList list = new ArrayList();
+		list = game.words;
+
+		while (true) {
+			System.out.println(list);
+			String prompt = ">>";
+			System.out.println(prompt);
+			System.out.println(game.wd);
+			Scanner s = new Scanner(System.in);
+			String input = s.nextLine().trim();
+
+			for (int i = 0; i < list.size(); i++) {
+				if (list.get(i).equals(input)) {
+					list.remove(input);
+					Toolkit.getDefaultToolkit().beep();
+
+				} else {
+					game.life--;
+					if (game.life < 0) {
+						System.out.println("졌네 졌어");
+						System.exit(0);
+					}
+				}
+			}
+		}
+	}
+
+	class WordGenerator implements Runnable {
+
+		/*
+		 * 
+		 * 다음의 코드를 완성하세요.
+		 * 
+		 * 
+		 * 
+		 * 1. words에 저장된 모든 단어(Word인스턴스)의 y값을 1 감소시킨다.
+		 * 
+		 * 2. y의 값이 0보다 작거나 같으면, words에서 단어를 제거하고 life를 1 감소시킨다.
+		 * 
+		 * 3. life의 값이 0이 되면 life와 점수를 출력하고 게임을 종료한다.
+		 * 
+		 * 4. 1초간 시간을 지연시킨다.(delay()사용)
+		 * 
+		 * 5. 반복문을 이용해서 1~4의 작업을 반복한다.
+		 * 
+		 */
+		public void run() {
+			while (true) {
+				try {
+					Thread.sleep(interval);
+					int ran = (int) (Math.random() * words.size());
+					words.add(new Word(data[ran]));
+					System.out.println(words);
+				} catch (Exception e) {
+				}
+			}
+		}
+	}
+
+	class WordDropper implements Runnable {
+		public void run() {
+			Iterator it = words.iterator();
+			while (it.hasNext()) {
+				((Word) it.next()).y--;
+			}
+		}
+	}
+
+	class Word {
+		String word = "";
+		int y;
+
+		Word(String word) {
+			this(word, 10);
+		}
+
+		Word(String word, int y) {
+			this.word = word;
+			this.y = y;
+		}
+
+		public String toString() {
+			return "LIFE: " + y + " SCORE: " + score;
+		}
+	}
+}

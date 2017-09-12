@@ -1,0 +1,46 @@
+import java.sql.*;
+import oracle.jdbc.pool.OracleDataSource;
+
+public class Main {
+
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		OracleDataSource ods=null;
+		Connection con=null;
+		//Statement stmt=null;
+		PreparedStatement pstmt=null;
+		ResultSet rs=null;
+		try {
+			ods=new OracleDataSource();
+			ods.setURL("jdbc:oracle:thin:@localhost:1521:xe");
+			ods.setUser("student");
+			ods.setPassword("1234");
+			con=ods.getConnection();
+			String q="select name from student where name=?";
+			String all="select * from student";
+			pstmt=con.prepareStatement(all);
+			//pstmt.setString(1, args[0]);
+			rs=pstmt.executeQuery();
+			System.out.println("¿Ã∏ß");
+			
+			while(rs.next()) {
+				System.out.println(rs.toString());
+			}
+		}catch(Exception e) {
+			System.out.println(e);
+		}
+		finally {
+			try {
+				if(con!=null)
+					con.close();
+				if(pstmt!=null)
+					pstmt.close();
+				if(rs!=null)
+					rs.close();
+			}catch(Exception e) {
+				System.out.println(e);
+			}
+		}
+	}
+
+}
