@@ -8,7 +8,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.util.Scanner;
-import oracle.jdbc.pool.OracleDataSource;
+//import oracle.jdbc.pool.OracleDataSource;
 
 public class ServerTest {
 	HashMap clients;
@@ -104,7 +104,7 @@ class ServerThread extends Thread{
 class DBThread extends Thread{
 	//Socket socket;
 	DataInputStream dis=null;
-	OracleDataSource ods = null;
+	//OracleDataSource ods = null;
 	Connection conn = null;
 	PreparedStatement pstmt = null;
 	PreparedStatement pstmt2=null;
@@ -117,12 +117,16 @@ class DBThread extends Thread{
 		this.next=next;
 	}
 	public void run() {
+		String jdbc_driver="com.mysql.jdbc.Driver";
+		String jdbc_url="jdbc:mysql://127.0.0.1:3306/db";
 		try {
-			ods = new OracleDataSource();
-			ods.setURL("jdbc:oracle:thin:@localhost:1521:xe");
-			ods.setUser("student");
-			ods.setPassword("1234");
-			conn = ods.getConnection();
+			//ods = new OracleDataSource();
+			//ods.setURL("jdbc:oracle:thin:@localhost:1521:xe");
+			//ods.setUser("student");
+			//ods.setPassword("1234");
+			//conn = ods.getConnection();
+			Class.forName(jdbc_driver);
+			conn=DriverManager.getConnection(jdbc_url,"root","1234");
 			String getRow="select * from student";
 			pstmt2=conn.prepareStatement(getRow);
 			rs=pstmt2.executeQuery();

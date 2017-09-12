@@ -5,30 +5,31 @@ import java.io.*;
 import java.util.*;
 import java.sql.*;
 import java.util.Scanner;
-import oracle.jdbc.pool.OracleDataSource;
+//import oracle.jdbc.pool.OracleDataSource;
 
 public class ClientTest {
-	static OracleDataSource ods = null;
+	//static OracleDataSource ods = null;
 	static Connection conn = null;
 	static PreparedStatement pstmt = null;
 	static ResultSet rs = null;
 	static String name = "";
 	static int dbrow;
 	ClientTest() {
-		try {
-			ods = new OracleDataSource();
-			ods.setURL("jdbc:oracle:thin:@localhost:1521:xe");
-			ods.setUser("student");
-			ods.setPassword("1234");
-			conn = ods.getConnection();
-			String cName = "select * from student";
-			pstmt = conn.prepareStatement(cName);
-			rs = pstmt.executeQuery();
-			for(int i=1;rs.next();i++) {
-				dbrow=i;
-			}
-		} catch (Exception e) {
-		}
+//		try {
+//			//ods = new OracleDataSource();
+//			//ods.setURL("jdbc:oracle:thin:@localhost:1521:xe");
+//			ods.setUser("student");
+//			ods.setPassword("1234");
+//			conn = ods.getConnection();
+//			String cName = "select * from student";
+//			pstmt = conn.prepareStatement(cName);
+//			rs = pstmt.executeQuery();
+//			for(int i=1;rs.next();i++) {
+//				dbrow=i;
+//			}
+//		} catch (Exception e) {
+//			//test
+//		}
 
 	}
 
@@ -36,7 +37,8 @@ public class ClientTest {
 		// TODO Auto-generated method stub
 		new ClientTest();
 		try {
-			String serverIP = "192.168.104.26";
+			//String serverIP = "192.168.104.26";
+			String serverIP="192.168.43.55";
 			Socket socket = new Socket(serverIP, 7777);
 			Thread sender = new Thread(new ClientSender(socket,args[0]));
 			Thread receive = new Thread(new ClientReceive(socket));
