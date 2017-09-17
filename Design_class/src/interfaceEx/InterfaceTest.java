@@ -1,3 +1,4 @@
+package interfaceEx;
 interface Flyable{
 	public void fly();
 }
@@ -9,16 +10,16 @@ interface Singable{
 class Person implements Flyable, Singable{
 	@Override
 	public void fly() {
-		System.out.println("¿ì¿Õ »ç¶÷ÀÌ ³¯¾Æ´Ù´Ñ´Ù!!");
+		System.out.println("ìš°ì™• ì‚¬ëŒì´ ë‚ ì•„ë‹¤ë‹Œë‹¤!");
 	}
 
 	@Override
 	public void sing() {
-		System.out.println("¿ì¿Õ ³ë·¡ ºÎ¸¥´Ù!!");
+		System.out.println("ìš°ì™• ë…¸ë˜í•œë‹¤!!");
 	}
 	
 	public void walk() {
-		System.out.println("¿ì¿Õ °È´Â´Ù!!");
+		System.out.println("ìš°ì™• ê±¸ì–´ë‹¤ë‹Œë‹¤!");
 	}
 }
 
@@ -26,11 +27,11 @@ class Fish implements Flyable{
 
 	@Override
 	public void fly() {
-		System.out.println("¿ì¿Õ ¹°°í±â°¡ ³¯¾Æ´Ù´Ñ´Ù!!");
+		System.out.println("ìš°ì™• ë¬¼ê³ ê¸°ê°€ ë‚ ì•„ë‹¤ë‹Œë‹¤!");
 	}
 	
 	public void swim() {
-		System.out.println("¿ì¿Õ ¹°°í±â°¡ Çì¾öÄ£´Ù!!");
+		System.out.println("ìš°ì™• ë¬¼ê³ ê¸°ê°€ í—¤ì—„ì¹œë‹¤!!");
 	}
 	
 }

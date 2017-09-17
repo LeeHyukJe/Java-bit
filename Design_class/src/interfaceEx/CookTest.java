@@ -1,3 +1,4 @@
+package interfaceEx;
 interface ICook{
 	public void makeRice();
 	public void makeSoup();
