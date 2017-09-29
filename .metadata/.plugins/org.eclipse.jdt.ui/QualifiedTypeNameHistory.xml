@@ -50,4 +50,5 @@
 <fullyQualifiedTypeName name="java.awt.Panel"/>
 <fullyQualifiedTypeName name="java.awt.Event"/>
 <fullyQualifiedTypeName name="java.awt.event.KeyListener"/>
+<fullyQualifiedTypeName name="com.sun.javafx.print.PrinterImpl"/>
 </qualifiedTypeNameHistroy>
