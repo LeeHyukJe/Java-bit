@@ -18,8 +18,6 @@
 <fullyQualifiedTypeName name="java.awt.FontMetrics"/>
 <fullyQualifiedTypeName name="java.awt.TextField"/>
 <fullyQualifiedTypeName name="java.awt.Label"/>
-<fullyQualifiedTypeName name="java.awt.Color"/>
-<fullyQualifiedTypeName name="java.awt.Graphics"/>
 <fullyQualifiedTypeName name="java.awt.Canvas"/>
 <fullyQualifiedTypeName name="java.awt.event.ActionEvent"/>
 <fullyQualifiedTypeName name="java.awt.event.ActionListener"/>
@@ -55,4 +53,10 @@
 <fullyQualifiedTypeName name="java.lang.String"/>
 <fullyQualifiedTypeName name="java.util.Arrays"/>
 <fullyQualifiedTypeName name="java.lang.System"/>
+<fullyQualifiedTypeName name="java.awt.BorderLayout"/>
+<fullyQualifiedTypeName name="java.lang.reflect.Field"/>
+<fullyQualifiedTypeName name="java.awt.Graphics"/>
+<fullyQualifiedTypeName name="java.awt.Color"/>
+<fullyQualifiedTypeName name="week_6.BallFrame"/>
+<fullyQualifiedTypeName name="javafx.print.Printer"/>
 </qualifiedTypeNameHistroy>

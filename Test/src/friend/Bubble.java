@@ -1,8 +1,8 @@
-package frient;
+package friend;
 
 import java.util.Arrays;
 
-public class Bublle {
+public class Bubble {
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
@@ -18,7 +18,7 @@ public class Bublle {
 			student_score[i] += kor[i] + eng[i] + math[i];
 		}
 
-		int[] order = new Bublle().order_print(student_score);
+		int[] order = new Bubble().order_print(student_score);
 
 		System.out.println("성명	국어	영어	수학	총합	평균	석차");
 		for (int i = 0; i < order.length; i++) {

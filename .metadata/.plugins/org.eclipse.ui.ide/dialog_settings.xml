@@ -15,9 +15,14 @@
 		<item value="false" key="WizardProjectsImportPage.STORE_COPY_PROJECT_ID"/>
 		<item value="false" key="WizardProjectsImportPage.STORE_ARCHIVE_SELECTED"/>
 		<list key="WizardProjectsImportPage.STORE_DIRECTORIES">
+			<item value="C:\Users\lims2733\Desktop\git\bit\java-chat\채팅클라이언트"/>
+			<item value="C:\Users\lims2733\Desktop\git\bit\java-chat\채팅클라이언트2"/>
+			<item value="C:\Users\lims2733\Desktop\git\bit\java-chat\채팅서버"/>
+			<item value="C:\Users\lims2733\Desktop\git\bit\java-chat"/>
 			<item value="C:\Users\lims2733\Desktop\git\bit"/>
 		</list>
 		<list key="WizardProjectsImportPage.STORE_ARCHIVES">
+			<item value=""/>
 			<item value="C:\Users\Bit\Desktop\java\Test\src"/>
 		</list>
 	</section>
