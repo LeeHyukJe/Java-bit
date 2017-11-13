@@ -22,6 +22,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.JTextPane;
+import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
 import javax.swing.text.AttributeSet;
 import javax.swing.text.SimpleAttributeSet;
@@ -29,6 +30,8 @@ import javax.swing.text.StyleConstants;
 import javax.swing.text.StyleContext;
 	  
 public class MainView extends JFrame {
+	
+	
 
 	private JPanel contentPane;
 	private JTextField textField; // 보낼 메세지 쓰는곳
@@ -146,9 +149,11 @@ public class MainView extends JFrame {
 	}
 
 	public void init() { // 화면구성 메소드
+		
+		
 
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 288, 392);
+		setBounds(1000, 1000, 2880, 3920);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);

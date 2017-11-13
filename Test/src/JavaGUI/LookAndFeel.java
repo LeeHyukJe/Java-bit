@@ -1,10 +1,14 @@
+package JavaGUI;
+
 import java.awt.Font;
 import java.util.Set;
 
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
 import javax.swing.UIManager;
 
-// Main.java Java Chatting Client 시작 부분 C 의 main() 함수
-public class Main {
+public class LookAndFeel extends JFrame{
 	
 	public static void setDefaultSize(int size) {
 
@@ -26,20 +30,33 @@ public class Main {
 
 	    }
 	}
-
+	
 	public static void main(String[] args) {
 		
 		try {
-			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+			UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
 		}catch(Exception e) {
 			e.printStackTrace();
 		}
 		
-		Main.setDefaultSize(30);
+		LookAndFeel.setDefaultSize(30);
 		
-		Client client = new Client();
-		client.setVisible(true);
-
+		JFrame window=new JFrame("LookAndFeel");
+		window.setVisible(true);
+		window.setSize(1000, 1000);
+		window.setResizable(false);
+		window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		
+		JPanel panel=new JPanel();
+		window.add(panel);
+		
+		JButton button=new JButton("LookAndFeel");
+		panel.add(button);
+		
 	}
-
+	
 }
+
+
+
+
