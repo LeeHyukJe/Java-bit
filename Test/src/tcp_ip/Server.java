@@ -37,6 +37,7 @@ public class Server {
 	//클라이언트에게 모두 전송
 	public void sendToAll(String msg) {
 		Iterator<String> it=clients.keySet().iterator();
+		System.out.println(msg); //서버 로그 찍기
 		while(it.hasNext()) {
 			DataOutputStream dos=clients.get(it.next());
 			try {
@@ -83,7 +84,6 @@ class ServerThread extends Thread{
 			
 			while(dis!=null) {
 				String result=dis.readUTF(); //client receive
-				//System.out.println(dis.readUTF());
 				server.sendToAll(result); //모든 클라이언트에게 전송
 			}
 		}catch(Exception e) {

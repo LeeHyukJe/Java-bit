@@ -1,4 +1,4 @@
-package draw;
+package homework_11_15;
 
 import java.awt.Canvas;
 import java.awt.Color;
@@ -23,16 +23,18 @@ interface Command{
 class DrawCommand implements Command{
 	protected Drawable drawable;
 	private Point position;
+	private Color color;
 	
-	public DrawCommand(Drawable drawable, Point position) {
+	public DrawCommand(Drawable drawable, Point position,Color color) {
 		this.drawable=drawable;
 		this.position=position;
+		this.color=color;
 	}
 	
 	@Override
 	public void execute() {
 		// TODO Auto-generated method stub
-		drawable.draw(position.x,position.y);
+		drawable.draw(position.x,position.y,color);
 	}
 	
 }
@@ -67,12 +69,12 @@ class MacroCommand implements Command{
 }
 
 interface Drawable{
-	public abstract void draw(int x, int y);
+	public abstract void draw(int x, int y,Color color);
 }
 
 class DrawCanvas extends Canvas implements Drawable{
 
-	private Color color=Color.red;
+	public Color color=Color.RED;
 	private int radius=6;
 	
 	private MacroCommand history;
@@ -87,7 +89,7 @@ class DrawCanvas extends Canvas implements Drawable{
 		history.execute();
 	}
 	@Override
-	public void draw(int x, int y) {
+	public void draw(int x, int y,Color color) {
 		// TODO Auto-generated method stub
 		Graphics g=getGraphics();
 		g.setColor(color);
@@ -100,7 +102,13 @@ class DrawCanvas extends Canvas implements Drawable{
 public class Main extends JFrame implements ActionListener {
 	private MacroCommand history=new MacroCommand();
 	private DrawCanvas canvas=new DrawCanvas(400,400,history);
+	
 	private JButton clearButton=new JButton("clear");
+	private JButton RedColorButton=new JButton("Red");
+	private JButton BlueColorButton=new JButton("blue");
+	private JButton GreenColorButton=new JButton("Green");
+	
+	private JButton UndoButton=new JButton("Undo");
 	
 	public Main(String title) {
 		super(title);
@@ -108,16 +116,29 @@ public class Main extends JFrame implements ActionListener {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		canvas.addMouseMotionListener(new MouseAdapter() {
 			public void mouseDragged(MouseEvent e) {
-				Command cmd=new DrawCommand(canvas,e.getPoint());
+				Command cmd=new DrawCommand(canvas,e.getPoint(),canvas.color);
 				history.append(cmd);
 				cmd.execute();
 			}
 		});
 		
-		clearButton.addActionListener(this);
+		clearButton.addActionListener(this); //클리어버튼
+		
+		//색깔 바꾸기
+		BlueColorButton.addActionListener(this);
+		RedColorButton.addActionListener(this);
+		GreenColorButton.addActionListener(this);
+		
+		//undo하기
+		UndoButton.addActionListener(this);
 		
 		Box buttonBox=new Box(BoxLayout.X_AXIS);
-		buttonBox.add(clearButton);
+		//버튼 붙이기
+		buttonBox.add(clearButton); //클리어 버튼
+		buttonBox.add(RedColorButton); //뻘겋게 칠하기
+		buttonBox.add(GreenColorButton); //녹색으로 칠하기
+		buttonBox.add(BlueColorButton); //퍼렇게 칠하기
+		buttonBox.add(UndoButton);
 		Box mainBox=new Box(BoxLayout.Y_AXIS);
 		mainBox.add(buttonBox);
 		mainBox.add(canvas);
@@ -134,11 +155,22 @@ public class Main extends JFrame implements ActionListener {
 			history.clear();
 			canvas.repaint();
 		}
+		else if(e.getSource()==BlueColorButton) {
+			canvas.color=Color.BLUE;
+		}
+		else if(e.getSource()==RedColorButton) {
+			canvas.color=Color.RED;
+		}
+		else if(e.getSource()==GreenColorButton) {
+			canvas.color=Color.GREEN;
+		}
+		else if(e.getSource()==UndoButton) {
+			history.undo();
+			canvas.repaint();
+		}
 	}
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		new Main("Command Pattern Sample");
 	}
-	
-
 }
