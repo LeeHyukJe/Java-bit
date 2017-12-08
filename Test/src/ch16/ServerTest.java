@@ -23,7 +23,7 @@ public class ServerTest {
 		Socket socket=null;
 		
 		try {
-			serverSocket=new ServerSocket(7777);
+			serverSocket=new ServerSocket(30013);
 			System.out.println("클라이언트 요청을 기다리고 있습니다.");
 			while(true) {
 				socket=serverSocket.accept();

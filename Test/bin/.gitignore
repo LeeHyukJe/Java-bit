@@ -34,13 +34,13 @@
 /PropertiesEx4.class
 /QueueEx1.class
 /RegularEx3.class
-/SpaceException.class
-/XMLParser.class
 /ShallowDeepCopy.class
+/SpaceException.class
 /StackEx1.class
 /TextEditor/
 /TreeSetEx1.class
 /WrapperEx3.class
+/XMLParser.class
 /ch11/
 /ch12/
 /ch13/
@@ -50,5 +50,5 @@
 /ch7/
 /friend/
 /system.class
-/연습문제/
 /tcp_ip/
+/연습문제/

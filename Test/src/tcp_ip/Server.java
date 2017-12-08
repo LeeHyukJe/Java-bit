@@ -26,7 +26,7 @@ public class Server {
 			while(true) {
 				socket=serverSocket.accept(); //클라이언트 연결 소켓 획득
 				System.out.println(socket.getInetAddress()+"가 접속.");
-				ServerThread serverThread=new ServerThread(socket);
+				ServerThread serverThread=new ServerThread(socket,this);
 				serverThread.start();
 			}
 		}catch(Exception e) {
@@ -56,15 +56,15 @@ public class Server {
 }
 
 class ServerThread extends Thread{
-	Server server=new Server();
+	//Server server=new Server();
 	Socket socket;
 	DataInputStream dis; //client receive
 	DataOutputStream dos; //client send
-	String name;
-	
-	public ServerThread(Socket socket) {
+	Server server;
+	Thread dbserver;
+	public ServerThread(Socket socket,Server server) {
 		this.socket=socket;
-		
+		this.server=server;
 		try {
 			dis=new DataInputStream(socket.getInputStream());
 			dos=new DataOutputStream(socket.getOutputStream());
@@ -73,7 +73,8 @@ class ServerThread extends Thread{
 		}
 	}
 	
-	public void run() {		
+	public void run() {
+		String name="";
 		try {
 			if(dis!=null) {
 				name=dis.readUTF();
@@ -85,6 +86,8 @@ class ServerThread extends Thread{
 			while(dis!=null) {
 				String result=dis.readUTF(); //client receive
 				server.sendToAll(result); //모든 클라이언트에게 전송
+				dbserver=new Thread(new DbServer(result));
+				dbserver.start();
 			}
 		}catch(Exception e) {
 			System.out.println(e);
