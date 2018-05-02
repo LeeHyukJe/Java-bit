@@ -1,22 +1,81 @@
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.util.*;
 
 public class RectTest {
 
-	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-		Point p1=new Point(10,10);
-		Point p2=new Point(20,20);
-		Rect a=new Rect(p1,p2);
-		System.out.println("Ω√¿€¡°("+a.getStart().getX()
-				+","+a.getStart().getY()+")");
-		System.out.println("≥°¡°("+a.getEnd().getX()
-				+","+a.getEnd().getY()+")");
-		System.out.println("≥–¿Ã="+a.getArea());
-		Rect b=new Rect(10,10,20,20);
-		System.out.println("Ω√¿€¡°("+b.getStart().getX()
-				+","+b.getStart().getY()+")");
-		System.out.println("≥°¡°("+b.getEnd().getX()
-				+","+b.getEnd().getY()+")");
-		System.out.println("≥–¿Ã="+b.getArea());
+	/**
+	 * Time complexity: Space complexity:
+	 */
+	public static void main(String[] args) throws Exception {
+		// try (BufferedReader br = new BufferedReader(new
+		// InputStreamReader(System.in))) {
+		// int T = Integer.parseInt(br.readLine().trim());
+		// for (int i = 0; i < T; ++i) {
+		// int count = 0;
+		// String word = br.readLine().trim();
+		// for (int j = 0; j < word.length(); j++) {
+		// for (char k = 'A'; k <= 'Z'; k++) {
+		// if (word.charAt(j) == k) {
+		// count++;
+		// if (j + 1 < word.length()) {
+		// if (word.charAt(j) != word.charAt(j + 1)) {
+		// System.out.print(count + "" + word.charAt(j));
+		// count = 0;
+		// }
+		// }
+		// }
+		// }
+		// }
+		// System.out.print(count + "" + word.charAt(word.length() - 1));
+		// System.out.println("");
+		// }
+		// }
+
+		/*
+		 *1
+		 *11
+		 *12
+		 *1121
+		 *122111
+		 *112213
+		 *12221131 
+		 */
+				ArrayList<String> antArray = new ArrayList<>();
+		antArray.add(1+"");
+		for (int i = 0; i < antArray.size(); i++) {
+			
+			int intCount[] = new int[11];
+			for (int j = 0; j < antArray.get(i).length(); j++) {
+				int count=0;
+				for (int k = 1; k <= 9; k++) {
+					// Î¶¨Ïä§Ìä∏ ÏïàÏóê ÏûàÎäî Ïà´ÏûêÏôÄ Í∞ôÏùÄ ÏßÄÎ•º ÎπÑÍµê
+					if (antArray.get(i).charAt(j) - '0' == k) {
+						count++;
+					}
+				}
+			}
+		}
+
 	}
 
+	public String solution(int n) {
+		ArrayList<Integer> antArray = new ArrayList<>();
+		ArrayList<Integer> intCount = new ArrayList<>();
+		antArray.add(1);
+		for (int i = 0; i < antArray.size(); i++) {
+			int count = 0;
+			for (int j = 0; j < 10; j++) {
+				// Î¶¨Ïä§Ìä∏ ÏïàÏóê ÏûàÎäî Ïà´ÏûêÏôÄ Í∞ôÏùÄ ÏßÄÎ•º ÎπÑÍµê
+				if (antArray.get(i) == j) {
+					count++; // Î¶¨Ïä§Ìä∏Ïóê ÏûàÎäî ÏàòÏôÄ ÎπÑÏä∑ÌïòÎ©¥ Ïπ¥Ïö¥Ìä∏ 1Ï¶ùÍ∞Ä
+					intCount.add(j + 1);
+					String temp = j + 1 + "" + intCount.get(j);
+					antArray.add(Integer.parseInt(temp));
+				}
+			}
+
+		}
+		return antArray.get(n) + "";
+	}
 }
